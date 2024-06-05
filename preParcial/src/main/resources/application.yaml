@@ -1,0 +1,25 @@
+#spring.application.name=preParcial
+
+spring:
+    sql:
+        init:
+            mode: always
+    application:
+        name: preParcial
+    mustache:
+        suffix: .html
+    datasource:
+        url: jdbc:postgresql://localhost:5432/postgres
+        username: postgres
+        password: 12345678Aa!
+    jpa:
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                globally_quoted_identifiers: true
+        show-sql: true
+        open-in-view: false
+    jwt:
+        secret: Keys.secretKeyFor(SignatureAlgorithm.HS256)
+        exptime: 300000
