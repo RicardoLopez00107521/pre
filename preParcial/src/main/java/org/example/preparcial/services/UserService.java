@@ -30,4 +30,5 @@ public interface UserService {
     User findUserAuthenticated();
 
     List<Role> rolesByUser(User user);
+    void createDefaultUser(String username, String userEmail, String password);
 }

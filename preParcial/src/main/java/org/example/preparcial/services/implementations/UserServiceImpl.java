@@ -69,19 +69,32 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
+    public Role findRoleByIdentifier(String identifier) {
+        return roleRepository
+                .findById(identifier)
+                .orElse(null);
+    }
+
+    private List<Role> findRolesByIdentifier(List<String> identifiers) {
+        return roleRepository.findAllById(identifiers
+                .stream()
+                .map(String::toUpperCase)
+                .collect(Collectors.toList()));
+    }
+
     @Override
     @Transactional(rollbackOn = Exception.class) // Indica una modificacion transaccional a la base de datos (Insercion), el rollback indica si hay una excepcion se revertira
     public void register(UserRegisterDTO info) {
 
         User user = new User();
 
-        Role roles = roleRepository.findByRolName("USER").get();
+        List<Role> roles = findRolesByIdentifier(List.of("USER"));
 
         user.setUsername(info.getUsername());
         user.setEmail(info.getEmail());
         user.setPassword(info.getPassword());
         user.setActive(true);
-        user.setRoles(Collections.singletonList(roles));
+        user.setRoles(roles);
 
         userRepository.save(user);
     }
@@ -172,5 +185,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Role> rolesByUser(User user) {
         return List.of();
+    }
+
+    @Override
+    public void createDefaultUser(String username, String userEmail, String password) {
+        User user = new User();
+
+        List<Role> roles = findRolesByIdentifier(List.of("SYSADMIN"));
+
+        user.setUsername(username);
+        user.setEmail(userEmail);
+        user.setPassword(password);
+        user.setActive(true);
+        user.setRoles(roles);
+
+        userRepository.save(user);
     }
 }

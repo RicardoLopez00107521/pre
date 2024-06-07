@@ -55,9 +55,10 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<Token> tokens;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "userRoles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "userId"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "rolId")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "userRoles",
+            joinColumns = @JoinColumn(name = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "roleId")
     )
     private List<Role> roles;
 
